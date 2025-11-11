@@ -138,14 +138,6 @@ def to_clean_dataframe(file_like):
             .astype(float)
         )
 
-    # Convert dates → proper datetime objects
-    date_cols = ["Card Issue Date", "Card Expiry Date"]
-    for col in date_cols:
-        if col in df.columns:
-            df[col] = (
-                pd.to_datetime(df[col], errors="coerce", dayfirst=True)
-            )
-
     return df
 
 st.set_page_config(page_title="MOHRE PDF → Clean Excel", page_icon="📄")
