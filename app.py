@@ -127,9 +127,9 @@ def to_clean_dataframe_emirati(file_like):
             df["Total Salary"].astype(str).str.replace(",", "", regex=False).str.strip()
             .replace("", pd.NA).astype(float)
         )
-    for col in ["Card Issue Date","Card Expiry Date"]:
-        if col in df.columns:
-            df[col] = pd.to_datetime(df[col], errors="coerce", dayfirst=True)
+    # for col in ["Card Issue Date","Card Expiry Date"]:
+    #     if col in df.columns:
+    #         df[col] = pd.to_datetime(df[col], errors="coerce", dayfirst=True)
     return df
 
 # ---------- Non-Emirati cleaner (new schema) ----------
@@ -219,7 +219,7 @@ def to_clean_dataframe_non_emirati(file_like):
 # ---------- UI ----------
 st.set_page_config(page_title="MOHRE Employee Lists → Clean Excel", page_icon="📄")
 st.title("MOHRE Employee Lists → Clean Excel")
-st.caption("Upload a MOHRE PDF. The app removes Arabic text, page furniture, and tidies the table into Excel.")
+st.caption("Upload a MOHRE PDF. The app removes Arabic text, QR codes, photos, and tidies the table into Excel format.")
 
 tabs = st.tabs(["Emirati (Local Employee List)", "Non-Emirati (Employees List)"])
 
