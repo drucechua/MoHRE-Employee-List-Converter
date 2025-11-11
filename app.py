@@ -193,6 +193,14 @@ def to_clean_dataframe_non_emirati(file_like):
     try: df = df.map(clean_cell)
     except AttributeError: df = df.applymap(clean_cell)
 
+    # --- NEW: split trailing ID from Person Name into Person Number ---
+    if "Person Name" in df.columns:
+        # capture: name (non-greedy) + trailing 8+ digits (if present) at the end of the cell
+        split = df["Person Name"].str.extract(r'^(?P<name>.*?)(?P<number>\d{8,})\s*$', expand=True)
+        # Person Number (text), Person Name cleaned
+        df["Person Number"] = split["number"].fillna("")
+        df["Person Name"] = split["name"].fillna(df["Person Name"]).str.strip()
+
     # validations/normalizers
     if "Passport Number" in df.columns:
         df["Passport Number"] = df["Passport Number"].astype(str).str.strip()
