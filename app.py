@@ -114,6 +114,38 @@ def to_clean_dataframe(file_like):
     df.dropna(how="all", inplace=True)
     df = df[~(df.astype(str).apply(lambda s: s.str.strip()).eq("").all(axis=1))]
     df.columns = [clean_cell(c) for c in df.columns]
+
+    # --- Type conversions ---
+    # Convert Row No → integer
+    if "Row No" in df.columns:
+        df["Row No"] = (
+            df["Row No"]
+            .astype(str).str.strip()
+            .replace("", pd.NA)
+            .astype("Int64")   # nullable integer
+        )
+
+    # Keep Person Code as TEXT (string) — do NOT convert to int
+    if "Person Code" in df.columns:
+        df["Person Code"] = df["Person Code"].astype(str).str.strip()
+
+    # Convert Total Salary → float
+    if "Total Salary" in df.columns:
+        df["Total Salary"] = (
+            df["Total Salary"]
+            .astype(str).str.replace(",", "").str.strip()
+            .replace("", pd.NA)
+            .astype(float)
+        )
+
+    # Convert dates → proper datetime objects
+    date_cols = ["Card Issue Date", "Card Expiry Date"]
+    for col in date_cols:
+        if col in df.columns:
+            df[col] = (
+                pd.to_datetime(df[col], errors="coerce", dayfirst=True)
+            )
+
     return df
 
 st.set_page_config(page_title="MOHRE PDF → Clean Excel", page_icon="📄")
