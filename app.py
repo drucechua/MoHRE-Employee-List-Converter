@@ -201,6 +201,15 @@ def to_clean_dataframe_non_emirati(file_like):
         df["Person Number"] = split["number"].fillna("")
         df["Person Name"] = split["name"].fillna(df["Person Name"]).str.strip()
 
+    # place Person Number after Person Name if present
+    if "Person Number" in df.columns:
+        cols = list(df.columns)
+        if "Person Name" in cols:
+            cols.remove("Person Number")
+            insert_at = cols.index("Person Name") + 1
+            cols.insert(insert_at, "Person Number")
+            df = df[cols]
+
     # validations/normalizers
     if "Passport Number" in df.columns:
         df["Passport Number"] = df["Passport Number"].astype(str).str.strip()
