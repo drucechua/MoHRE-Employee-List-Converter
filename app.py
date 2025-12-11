@@ -238,7 +238,7 @@ st.set_page_config(page_title="MOHRE Employee Lists → Clean Excel", page_icon=
 st.title("MOHRE Employee Lists → Clean Excel")
 st.caption("Upload a MOHRE PDF. The app removes Arabic text, QR codes, photos, and tidies the table into Excel format.")
 
-tabs = st.tabs(["Emirati (Local Employee List)", "Non-Emirati (Employees List)"])
+tabs = st.tabs(["Emirati (Local Employee List)", "All Employees List"])
 
 with tabs[0]:
     st.subheader("Emirati List")
